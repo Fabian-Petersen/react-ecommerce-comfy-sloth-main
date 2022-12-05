@@ -7,11 +7,20 @@ import {
   GET_SINGLE_PRODUCT_BEGIN,
   GET_SINGLE_PRODUCT_SUCCESS,
   GET_SINGLE_PRODUCT_ERROR,
-} from '../actions'
+} from "../actions";
 
+//?State is the old state before the action took place.
 const products_reducer = (state, action) => {
-  return state
-  throw new Error(`No Matching "${action.type}" - action type`)
-}
+  if (action.type === SIDEBAR_OPEN) {
+    return { ...state, isSidebarOpen: true };
+  }
 
-export default products_reducer
+  if (action.type === SIDEBAR_CLOSE) {
+    return { ...state, isSidebarOpen: false };
+  }
+
+  return state;
+  throw new Error(`No Matching "${action.type}" - action type`);
+};
+
+export default products_reducer;
