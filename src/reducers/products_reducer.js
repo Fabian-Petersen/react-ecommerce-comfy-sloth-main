@@ -8,6 +8,7 @@ import {
   GET_SINGLE_PRODUCT_SUCCESS,
   GET_SINGLE_PRODUCT_ERROR,
 } from "../actions";
+import { Loading } from "../components";
 
 //?State is the old state before the action took place.
 const products_reducer = (state, action) => {
@@ -19,7 +20,27 @@ const products_reducer = (state, action) => {
     return { ...state, isSidebarOpen: false };
   }
 
-  return state;
+  if (action.type === GET_PRODUCTS_BEGIN) {
+    return { ...state, products_loading: true };
+  }
+
+  if (action.type === GET_PRODUCTS_SUCCESS) {
+    const featured_products = action.payload.filter(
+      (product) => product.featured === true
+    );
+
+    return {
+      ...state,
+      products_loading: false,
+      products: action.payload,
+      featured_products,
+    };
+  }
+
+  if (action.type === GET_PRODUCTS_ERROR) {
+    return { ...state, products_loading: false, products_error: true };
+  }
+
   throw new Error(`No Matching "${action.type}" - action type`);
 };
 
